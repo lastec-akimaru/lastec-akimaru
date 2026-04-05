@@ -105,16 +105,55 @@ Real-time Video Pipeline Architect & Systems Engineer
 
 ---
 
-### Encoder pipeline (planned)
+### ⚠️ H.264 エンコードに関する重要な注意（現在、検討中）
 
-Encoder 側は、すでに **Windows で実装が存在**していて、  
-それを **C++ にポーティングする予定**です。
+本プロジェクトには、Cisco OpenH264（公式バイナリ）を利用した  
+**実験的なエンコード処理** が含まれています。
 
-やりたいことはシンプルで：
+しかし、**Cisco が特許料免除を明言しているのは “デコードのみ”** であり、  
+**H.264 エンコードは MPEG‑LA の特許対象となる可能性があります。**
 
-- ユーザアプリケーションから Raw(YUV/RGB) を受け取る  
-- OpenH264(Cisco, Non-GPL) encoder で H.264 にする  
-- 必要に応じて FFmpeg(LGPL) で mux / RTSP(S) 配信 / ファイル保存
+誤解を避けるため、以下を明確にしておきます：
+
+- **H.264 エンコードは、用途によっては特許ライセンスが必要になる可能性があります。**
+- 本エンコード機能は **評価目的（evaluation）** として提供しています。
+- 現時点では、**商用利用や再配布には推奨しません。**
+
+現在、より安全で持続的なエンコード方式を **検討中** です。  
+候補としては以下を含みます：
+
+- **ハードウェアエンコード**  
+  - NVIDIA NVENC  
+  - Intel QuickSync  
+  - Apple VideoToolbox  
+  - Android MediaCodec  
+  （※ 特許料はハードウェア／OS ベンダーが負担）
+
+- **OS ネイティブエンコード**  
+  - Windows Media Foundation  
+  - macOS / iOS AVFoundation  
+  - Android MediaCodec  
+
+- **その他、法務的に安全なアプローチ**
+
+最終的なエンコード方式は、**技術面と法務面の両方を考慮した上で決定** します。
+
+---
+
+### Encoder pipeline（予定）
+
+エンコード側はすでに **Windows で実装が存在** しており、  
+今後 **C++ へポーティングする予定** です。
+
+基本的な流れはシンプルです：
+
+- ユーザアプリケーションから Raw（YUV/RGB）フレームを受け取る  
+- OpenH264（Cisco, Non‑GPL）で H.264 にエンコード  
+- 必要に応じて FFmpeg（LGPL）で mux / RTSP(S) 配信 / ファイル出力
+
+> **注:** 上記のエンコードパイプラインは、前述のライセンス上の理由により  
+> 現在 “検討中” の扱いとなっています。
+
 
 ```text
 User Application → Raw(YUV/RGB)

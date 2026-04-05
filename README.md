@@ -101,6 +101,27 @@ because direct hardware access from Docker often reduces performance.
 The pipeline is designed to adapt to a wide range of requirements.
 
 ---
+### ⚠️ H.264 Encoding — Important Legal Notice (Under Evaluation)
+
+This project currently includes an **experimental encoder module** based on
+Cisco OpenH264.  
+However, **H.264 encoding is *not* covered by Cisco’s patent fee waiver**.
+Only decoding is explicitly royalty‑free when using the official Cisco binary.
+
+To avoid misunderstanding:
+- **H.264 encoding may require MPEG‑LA patent licensing**, depending on usage.
+- The encoder module is provided **for evaluation purposes only**.
+- It is **not recommended for commercial redistribution** at this stage.
+
+We are currently **evaluating safer and more sustainable alternatives**, including:
+- Hardware‑accelerated encoders (NVENC, QuickSync, VideoToolbox, MediaCodec)
+- OS‑native encoders (Media Foundation, AVFoundation)
+- Other legally safe approaches for commercial use
+
+The final encoder strategy will be determined with both **technical** and
+**legal** considerations in mind.
+
+---
 
 ### Encoder pipeline (planned)
 
@@ -111,7 +132,11 @@ The idea is simple:
 
 - Receive Raw (YUV/RGB) frames from the user application  
 - Encode them into H.264 using OpenH264 (Cisco, Non‑GPL)  
-- Optionally use FFmpeg(LGPL) for muxing / RTSP(S) streaming / file output
+- Optionally use FFmpeg (LGPL) for muxing / RTSP(S) streaming / file output
+
+> **Note:** The encoder pipeline is currently under evaluation due to
+> licensing considerations described above.
+
 
 ```text
 User Application → Raw(YUV/RGB)
